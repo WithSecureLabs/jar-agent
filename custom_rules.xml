@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jar-agent" default="help">
+
+  <target name="-post-build">
+    <exec executable="dx">
+      <arg value="--dex" />
+      <arg value="--output" />
+      <arg value="bin/classes.dex" />
+      <arg value="bin/classes.jar" />
+      <arg value="../jdiesel/bin/classes.jar" />
+      <arg value="../drozer/src/drozer/lib/protobuf-java-2.4.1.jar" />
+    </exec>
+    <exec executable="zip">
+      <arg value="-j" />
+      <arg value="bin/classes.jar" />
+      <arg value="bin/classes.dex" />
+    </exec>
+  </target>
+
+</project>
