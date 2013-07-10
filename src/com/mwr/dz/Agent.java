@@ -9,8 +9,6 @@ import com.mwr.jdiesel.api.DeviceInfo;
 import com.mwr.jdiesel.api.connectors.Endpoint;
 import com.mwr.jdiesel.api.links.Client;
 
-//import android.content.Context;
-
 public class Agent {
 	
 	private DeviceInfo device_info;
