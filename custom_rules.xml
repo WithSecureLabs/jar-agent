@@ -8,7 +8,7 @@
       <arg value="bin/classes.dex" />
       <arg value="bin/classes.jar" />
       <arg value="../jdiesel/bin/classes.jar" />
-      <arg value="../drozer/src/drozer/lib/protobuf-java-2.4.1.jar" />
+      <arg value="../jdiesel/libs/protobuf-java-2.4.1.jar" />
     </exec>
     <exec executable="zip">
       <arg value="-j" />
