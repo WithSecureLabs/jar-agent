@@ -16,8 +16,27 @@ public class Agent {
 	private Client client;
 	private String uid;
 	
+	public Agent(String host, int port) {
+		this.device_info = new DeviceInfo(this.getUID(),
+				android.os.Build.MANUFACTURER,
+				"unknown",
+				"unknown");
+		this.endpoint = new Endpoint(
+				1,
+				"drozer Server",
+				host,
+				port,
+				false,
+				"",
+				"",
+				"");
+	}
+	
 	public static void main(String[] args) {
-		new Agent().run();
+		if(args.length == 2)
+			new Agent(args[0], Integer.parseInt(args[1])).run();
+		else
+			System.out.println("usage: agent.jar host port");
 	}
 	
 	public static Context getContext() {
@@ -38,19 +57,6 @@ public class Agent {
 	}
 	
 	public void run() {
-		this.device_info = new DeviceInfo(this.getUID(),
-				android.os.Build.MANUFACTURER,
-				"unknown",
-				"unknown");
-		this.endpoint = new Endpoint(
-				1,
-				"drozer Server",
-				"10.0.2.2",
-				31415,
-				false,
-				"",
-				"",
-				"");
 		this.client = new Client(this.endpoint, this.device_info);
 		this.client.start();
 	}
