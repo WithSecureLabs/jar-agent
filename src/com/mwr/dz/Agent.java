@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.mwr.jdiesel.api.DeviceInfo;
 import com.mwr.jdiesel.api.connectors.Endpoint;
@@ -19,12 +20,83 @@ import com.mwr.jdiesel.api.links.Client;
 
 public class Agent {
 	
+	private static Context context;
+	
 	private DeviceInfo device_info;
 	private Endpoint endpoint;
 	private Client client;
 	private String uid;
 	
 	public Agent(String host, int port) {
+		Agent.context = null;
+		
+		this.device_info = new DeviceInfo(
+				this.getUID(),
+				android.os.Build.MANUFACTURER,
+				android.os.Build.MODEL,
+				android.os.Build.VERSION.RELEASE);
+		this.endpoint = new Endpoint(
+				1,
+				"drozer Server",
+				host,
+				port,
+				false,
+				"",
+				"",
+				"",
+				true);
+	}
+	
+	public Agent(String host, int port, Context applicationContext)
+	{
+		Agent.context = applicationContext;
+		
+		this.device_info = new DeviceInfo(
+				this.getUID(),
+				android.os.Build.MANUFACTURER,
+				android.os.Build.MODEL,
+				android.os.Build.VERSION.RELEASE);
+		this.endpoint = new Endpoint(
+				1,
+				"drozer Server",
+				host,
+				port,
+				false,
+				"",
+				"",
+				"",
+				true);
+	}
+	
+	public Agent(String host, int port, String packageName, Context systemContext)
+	{
+		try
+		{
+			Agent.context = systemContext.createPackageContext(packageName, 2);
+			
+			Log.i("drozer", "Got package context for " + packageName);
+		}
+		catch (Exception e)
+		{
+			Log.e("drozer", "Could not get package context for " + packageName);
+			Log.d("drozer", e.getMessage());
+		}
+		
+		if (Agent.context == null)
+		{
+			try
+			{
+				Agent.context = systemContext.getApplicationContext();
+				
+				Log.i("drozer", "Got system context");
+			}
+			catch (Exception e)
+			{
+				Log.e("drozer", "Could not get system context");
+				Log.d("drozer", e.getMessage());
+			}
+		}
+		
 		this.device_info = new DeviceInfo(
 				this.getUID(),
 				android.os.Build.MANUFACTURER,
@@ -50,11 +122,11 @@ public class Agent {
 	}
 	
 	public static Context getContext() {
-		return null;
+		return Agent.context;
 	}
 	
 	public Context getMercuryContext() {
-		return null;
+		return Agent.context;
 	}
 
 	private String loadUID(){
