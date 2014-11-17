@@ -129,22 +129,6 @@ public class Agent {
 		return Agent.context;
 	}
 
-	private String loadUID(){
-		String uid = null;
-
-		File uid_file = new File("uid.txt");
-		if(uid_file.exists()) {
-			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(uid_file)));
-				uid = reader.readLine();
-				reader.close();
-			}
-			catch(IOException e) { }
-		}
-
-		return uid;
-	}
-    
 	private String createUID(){
 		String uid = new BigInteger(64, new SecureRandom()).toString(32);
 
@@ -161,12 +145,6 @@ public class Agent {
 	}
 
 	public String getUID() {
-		// we cannot request the ANDROID_ID, because we have no context, so
-		// we must generate one at random
-		
-		// first, check if there is a stored UID that we can load...
-        this.uid = this.loadUID();
-        // ... if not then create one
 		if(this.uid == null)
 			this.uid = createUID();
 
